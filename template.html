@@ -63,14 +63,105 @@
   </div>
   <script>
     (function() {
-      const logoUrl = "{{logoUrl}}";
-      const defaultLogo = '<img src="' + logoUrl + '" alt="{{projectName}} logo" class="firework-gif-ad">';
+      const ensureLoadingStyles = () => {
+        if (document.getElementById('app-loader-styles')) {
+          return;
+        }
+
+        const style = document.createElement('style');
+        style.id = 'app-loader-styles';
+        style.textContent = `
+          .firework-loader {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+          }
+
+          .firework-loader-spinner {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: firework-loader-spin 0.8s linear infinite;
+            z-index: 1;
+            transition: opacity 0.2s ease;
+          }
+
+          .firework-loader-video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            background: #000;
+          }
+
+          .firework-loader.is-ready .firework-loader-spinner {
+            opacity: 0;
+          }
+
+          .firework-loader.is-ready .firework-loader-video {
+            opacity: 1;
+          }
+
+          @keyframes firework-loader-spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `;
+
+        document.head.appendChild(style);
+      };
+
+      const loaderLogoUrl = "{{loaderLogoUrl}}";
+      const fallbackLogoUrl = "{{logoUrl}}";
+      const hasLoaderLogoUrl = loaderLogoUrl
+        && !/^\s*\{\{.+\}\}\s*$/.test(loaderLogoUrl);
+      const logoUrl = hasLoaderLogoUrl
+        ? loaderLogoUrl
+        : fallbackLogoUrl;
+      const sanitizedLogoUrl = logoUrl.split('?')[0].split('#')[0].toLowerCase();
+      const isVideoLogo = /\.(mp4|webm|ogg|mov|m4v)$/i.test(sanitizedLogoUrl);
+      const defaultLogo = isVideoLogo
+        ? '<div class="firework-loader" aria-live="polite" aria-busy="true"><div class="firework-loader-spinner" aria-hidden="true"></div><video class="firework-loader-video" autoplay muted loop playsinline preload="auto"><source src="' + logoUrl + '"></video></div>'
+        : '<img src="' + logoUrl + '" alt="{{projectName}} logo" class="firework-gif-ad">';
       const app = document.getElementById('app');
       const windowRoute = window.location.pathname;
 
       // Show loading image if app is empty or on non-root routes
       if (app && (!app.innerHTML.trim() || windowRoute !== '/')) {
+        if (isVideoLogo) {
+          ensureLoadingStyles();
+        }
+
         app.innerHTML = defaultLogo;
+
+        if (isVideoLogo) {
+          const loader = app.querySelector('.firework-loader');
+          const video = app.querySelector('.firework-loader-video');
+          const revealVideo = () => {
+            loader && loader.classList.add('is-ready');
+          };
+
+          if (video) {
+            if (video.readyState >= 2) {
+              revealVideo();
+            } else {
+              video.addEventListener('loadeddata', revealVideo, { once: true });
+              video.addEventListener('canplay', revealVideo, { once: true });
+              video.addEventListener('error', revealVideo, { once: true });
+              setTimeout(revealVideo, 3000);
+              video.load();
+            }
+          }
+        }
       }
     })();
   </script>
