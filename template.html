@@ -35,6 +35,7 @@
     window.oneSignalUnavailable = false;
 
     const oneSignalScript = document.createElement("script");
+    if(oneSignalScript){
     oneSignalScript.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";
     oneSignalScript.defer = true;
     oneSignalScript.onerror = () => {
@@ -42,6 +43,8 @@
       console.warn("OneSignal page SDK failed to load. Continuing without push support.");
     };
     document.head.appendChild(oneSignalScript);
+    }
+
   </script>
   <style>
     body {
@@ -64,7 +67,7 @@
     }
       {{cssCache}}
   </style>
-  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-B0tTRoGl.js"></script>
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-Dp-nQzxQ.js"></script>
   <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/mftsccs-browser-CXpMbY21.js">
   <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-BydaCWnD.css">
 </head>
