@@ -12,6 +12,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="{{appleTouchUrl}}">
   <meta name="description" content="{{metaDescription}}">
   <meta name="keywords" content="{{metaKeywords}}">
+  <link rel="canonical" href="{{pageUrl}}">
+  <meta property="og:title" content="{{metaTitle}}">
+  <meta property="og:description" content="{{metaDescription}}">
+  <meta property="og:image" content="{{metaImage}}">
+  <meta property="og:url" content="{{pageUrl}}">
   <title>{{metaTitle}}</title>
   <meta name="project-alias" content="{{alias}}">
           <script type="application/ld+json">
@@ -148,10 +153,9 @@
         ? '<div class="firework-loader" aria-live="polite" aria-busy="true"><div class="firework-loader-spinner" aria-hidden="true"></div><video class="firework-loader-video" autoplay muted loop playsinline preload="auto"><source src="' + logoUrl + '"></video></div>'
         : '<img src="' + logoUrl + '" alt="{{projectName}} logo" class="firework-gif-ad">';
       const app = document.getElementById('app');
-      const windowRoute = window.location.pathname;
 
-      // Show loading image if app is empty or on non-root routes
-      if (app && (!app.innerHTML.trim() || windowRoute !== '/')) {
+      // Show loading image only if the server did not provide cached HTML.
+      if (app && !app.innerHTML.trim()) {
         if (isVideoLogo) {
           ensureLoadingStyles();
         }
