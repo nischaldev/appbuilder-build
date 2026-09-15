@@ -72,7 +72,7 @@
     }
       {{cssCache}}
   </style>
-  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-B9rE3EPN.js"></script>
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-BNRr-mK_.js"></script>
   <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/mftsccs-browser-PPaClN0Y.js">
   <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-BydaCWnD.css">
 </head>
@@ -153,9 +153,23 @@
         ? '<div class="firework-loader" aria-live="polite" aria-busy="true"><div class="firework-loader-spinner" aria-hidden="true"></div><video class="firework-loader-video" autoplay muted loop playsinline preload="auto"><source src="' + logoUrl + '"></video></div>'
         : '<img src="' + logoUrl + '" alt="{{projectName}} logo" class="firework-gif-ad">';
       const app = document.getElementById('app');
+      const hasVisibleCachedContent = () => {
+        if (!app || !app.innerHTML.trim()) {
+          return false;
+        }
 
-      // Show loading image only if the server did not provide cached HTML.
-      if (app && !app.innerHTML.trim()) {
+        if (app.textContent && app.textContent.trim()) {
+          return true;
+        }
+
+        return Array.from(app.children).some((child) => {
+          const rect = child.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        });
+      };
+
+      // Show loading image only if the server did not provide visible cached HTML.
+      if (app && !hasVisibleCachedContent()) {
         if (isVideoLogo) {
           ensureLoadingStyles();
         }
