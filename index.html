@@ -21,22 +21,38 @@
   
   <!-- <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"> -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- origins the page needs before it can paint: API, cache server and the two image hosts -->
+  <link rel="preconnect" href="https://deploy.freeschema.com" crossorigin>
+  <link rel="preconnect" href="https://boomconsole.com" crossorigin>
+  <link rel="preconnect" href="https://s3cdn.boomconcole.com">
+  <link rel="preconnect" href="https://boomconcole.com">
   <script>
+    // Google Sign-In (100 KiB) and the OneSignal page SDK (44 KiB) are not needed for the first
+    // paint, so they load after the page has loaded, when the browser is idle. OneSignal calls
+    // are queued on OneSignalDeferred until its SDK arrives, so no call is lost.
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     window.oneSignalUnavailable = false;
-
-    const oneSignalScript = document.createElement("script");
-    if(oneSignalScript){
-    oneSignalScript.src = "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js";
-    oneSignalScript.defer = true;
-    oneSignalScript.onerror = () => {
-      window.oneSignalUnavailable = true;
-      console.warn("OneSignal page SDK failed to load. Continuing without push support.");
-    };
-    document.head.appendChild(oneSignalScript);
-    }
-
+    (function () {
+      var loadScript = function (src, onError) {
+        var script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        if (onError) script.onerror = onError;
+        document.head.appendChild(script);
+      };
+      var loadThirdPartyScripts = function () {
+        loadScript("https://accounts.google.com/gsi/client");
+        loadScript("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js", function () {
+          window.oneSignalUnavailable = true;
+          console.warn("OneSignal page SDK failed to load. Continuing without push support.");
+        });
+      };
+      var whenIdle = function () {
+        (window.requestIdleCallback || function (callback) { setTimeout(callback, 1); })(loadThirdPartyScripts, { timeout: 3000 });
+      };
+      if (document.readyState === "complete") whenIdle();
+      else window.addEventListener("load", whenIdle, { once: true });
+    })();
   </script>
   <style>
     body {
@@ -58,8 +74,8 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-Nz2t5Ssz.js"></script>
-  <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/mftsccs-browser-PPaClN0Y.js">
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-Cbj_3f3J.js"></script>
+  <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/mftsccs-browser-7RQAod5l.js">
   <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@main/assets/index-BydaCWnD.css">
 </head>
 
