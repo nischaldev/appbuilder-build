@@ -79,6 +79,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
+      /* An explicit size, so the loader never paints at the image's own pixel size. Without a
+         width here the desktop loader grew with whatever the project uploaded, and PageSpeed
+         reported the file as oversized because it only knew the 150px mobile rule. The logo is
+         saved at 360x360, which is twice this box and stays sharp on high density screens. */
+      width: 180px;
+      height: auto;
     }
 
     @media (max-width:568px) {
@@ -88,9 +94,9 @@
     }
       {{cssCache}}
   </style>
-  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.90559/assets/index-bawOLcA2.js"></script>
-  <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.90559/assets/mftsccs-browser-B2QQVaeS.js">
-  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.90559/assets/index-BydaCWnD.css">
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.91901/assets/index-CgyUIin7.js"></script>
+  <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.91901/assets/mftsccs-browser-B2QQVaeS.js">
+  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.91901/assets/index-BydaCWnD.css">
 </head>
 
 <body>
