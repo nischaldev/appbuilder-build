@@ -79,11 +79,14 @@
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      /* An explicit size, so the loader never paints at the image's own pixel size. Without a
-         width here the desktop loader grew with whatever the project uploaded, and PageSpeed
-         reported the file as oversized because it only knew the 150px mobile rule. The logo is
-         saved at 360x360, which is twice this box and stays sharp on high density screens. */
-      width: 180px;
+      /* An explicit size, so the loader never paints at the image's own pixel size: without a
+         width here the desktop loader grew with whatever the project uploaded.
+         263px is chosen to match the 263x263 the logo is saved at (see LOGO_OUTPUT_SIZE in
+         AppBuilder's image adjuster), which keeps PageSpeed happy on both form factors from one
+         file: desktop measures this box at 1x, and mobile measures the 150px box below at the
+         1.75x it emulates, which is the same 263. Changing either number needs the other and the
+         saved size changed with it, or the "image larger than it needs to be" report comes back. */
+      width: 263px;
       height: auto;
     }
 
@@ -94,9 +97,10 @@
     }
       {{cssCache}}
   </style>
-  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.91901/assets/index-CgyUIin7.js"></script>
-  <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.91901/assets/mftsccs-browser-B2QQVaeS.js">
-  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261029.91901/assets/index-BydaCWnD.css">
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261102.52038/assets/index-CSjr3GC0.js"></script>
+  <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261102.52038/assets/mftsccs-browser-B2QQVaeS.js">
+  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261102.52038/assets/index-BydaCWnD.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/nischaldev/appbuilder-build@v1.20261102.52038/assets/index-BydaCWnD.css"></noscript>
 </head>
 
 <body>
